@@ -1,56 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Minor Variances in the City of Hamilton (2023)</title>
-    <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.27/esri/themes/light/main.css"
+    />
     <!-- ArcGIS JavaScript API -->
-    <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.27/esri/themes/light/main.css"
+    />
     <script src="https://js.arcgis.com/4.27/"></script>
     <style>
-        html, body, #viewDiv {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
+      html,
+      body,
+      #viewDiv {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="viewDiv"></div>
 
     <script>
-        require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer"], function(Map, MapView, GeoJSONLayer) {
-            // Create a Map instance
-            var map = new Map({
-                basemap: "topo-vector"
-            });
-
-            // Create a MapView instance
-            var view = new MapView({
-                container: "viewDiv",
-                map: map,
-                center: [-79.8711, 43.2557], // Center on Hamilton, Ontario
-                zoom: 12
-            });
-
-            // Q1 layer
-            var geojsonLayerQ1 = new GeoJSONLayer({
-                url: "https://lazipops.github.io/Minor-Variances-in-the-City-of-Hamilton/data/geoJSON/2023 Q1/Minor_Variance_Applications_2023_Q1.geojson",
-                title: "Minor Variances Hamilton Q1"
-            });
-            // Q2 layer
-            var geojsonLayerQ2 = new GeoJSONLayer({
-                url: "https://lazipops.github.io/Minor-Variances-in-the-City-of-Hamilton/data/geoJSON/2023 Q2/Minor_Variance_Applications_2023_Q2.geojson",
-                title: "Minor Variances Hamilton Q2"
-            });
-
-            // Add the layers to the map
-            map.add(geojsonLayerQ1);
-            map.add(geojsonLayerQ2);
+      require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/GeoJSONLayer",
+      ], function (Map, MapView, GeoJSONLayer) {
+        // Create a Map instance
+        var map = new Map({
+          basemap: "topo-vector",
         });
+
+        // Create a MapView instance
+        var view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [-79.8711, 43.2557], // Center on Hamilton, Ontario
+          zoom: 12,
+        });
+
+        var renderer = new UniqueValueRenderer({
+          field: "APP_STATUS", // Attribute to base colors on
+          uniqueValueInfos: [
+            {
+              value: "Approved", // Status: Approved
+              symbol: {
+                type: "simple-marker", // Marker type
+                color: "green", // Color for Approved
+                size: "8px",
+                outline: { color: "white", width: 1 },
+              },
+              label: "Approved",
+            },
+            {
+              value: "Rejected", // Status: Rejected
+              symbol: {
+                type: "simple-marker", // Marker type
+                color: "red", // Color for Rejected
+                size: "8px",
+                outline: { color: "white", width: 1 },
+              },
+              label: "Rejected",
+            },
+            {
+              value: "Pending", // Status: Pending
+              symbol: {
+                type: "simple-marker", // Marker type
+                color: "orange", // Color for Pending
+                size: "8px",
+                outline: { color: "white", width: 1 },
+              },
+              label: "Pending",
+            },
+          ],
+          defaultSymbol: {
+            type: "simple-marker", // Default marker type
+            color: "gray", // Default color
+            size: "8px",
+            outline: { color: "white", width: 1 },
+          },
+          defaultLabel: "Other",
+        });
+
+        // Q1 layer
+        var geojsonLayerQ1 = new GeoJSONLayer({
+          url: "https://lazipops.github.io/Minor-Variances-in-the-City-of-Hamilton/data/geoJSON/2023 Q1/Minor_Variance_Applications_2023_Q1.geojson",
+          title: "Minor Variances Hamilton Q1",
+          renderer: renderer,
+        });
+        // Q2 layer
+        var geojsonLayerQ2 = new GeoJSONLayer({
+          url: "https://lazipops.github.io/Minor-Variances-in-the-City-of-Hamilton/data/geoJSON/2023 Q2/Minor_Variance_Applications_2023_Q2.geojson",
+          title: "Minor Variances Hamilton Q2",
+        });
+
+        // Add the layers to the map
+        map.add(geojsonLayerQ1);
+        map.add(geojsonLayerQ2);
+      });
     </script>
-</body>
+  </body>
 </html>
