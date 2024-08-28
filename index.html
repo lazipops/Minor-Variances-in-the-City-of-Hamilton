@@ -21,19 +21,34 @@
     <div id="viewDiv"></div>
 
     <script>
-        require(["esri/Map", "esri/views/MapView"], function(Map, MapView) {
+        require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer"], function(Map, MapView, GeoJSONLayer) {
             // Create a Map instance
             var map = new Map({
                 basemap: "topo-vector"
             });
 
-            // Map instance for displaying a 2D view
+            // Create a MapView instance
             var view = new MapView({
-                container: "viewDiv",  // Reference to the div to hold the map
-                map: map,  // Reference to the Map object
-                center: [-79.8711, 43.2557],  // Center coordinates (longitude, latitude) for Hamilton, Ontario
-                zoom: 12  // Zoom level
+                container: "viewDiv",
+                map: map,
+                center: [-79.8711, 43.2557], // Center on Hamilton, Ontario
+                zoom: 12
             });
+
+            // Q1 layer
+            var geojsonLayerQ1 = new GeoJSONLayer({
+                url: "https://lazipops.github.io/Minor-Variances-in-the-City-of-Hamilton/data/geoJSON/2023 Q1/Minor_Variance_Applications_2023_Q1.geojson",
+                title: "Minor Variances Hamilton Q1"
+            });
+            // Q2 layer
+            var geojsonLayerQ2 = new GeoJSONLayer({
+                url: "https://lazipops.github.io/Minor-Variances-in-the-City-of-Hamilton/data/geoJSON/2023 Q2/Minor_Variance_Applications_2023_Q2.geojson",
+                title: "Minor Variances Hamilton Q2"
+            });
+
+            // Add the layers to the map
+            map.add(geojsonLayerQ1);
+            map.add(geojsonLayerQ2);
         });
     </script>
 </body>
