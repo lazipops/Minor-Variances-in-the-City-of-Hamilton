@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minor Variances in the City of Hamilton (2023)</title>
+    <!-- ArcGIS JavaScript API -->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.27/"></script>
+    <style>
+        html, body, #viewDiv {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="viewDiv"></div>
+
+    <script>
+        require(["esri/Map", "esri/views/MapView"], function(Map, MapView) {
+            // Create a Map instance
+            var map = new Map({
+                basemap: "topo-vector"
+            });
+
+            // Map instance for displaying a 2D view
+            var view = new MapView({
+                container: "viewDiv",  // Reference to the div to hold the map
+                map: map,  // Reference to the Map object
+                center: [-79.8711, 43.2557],  // Center coordinates (longitude, latitude) for Hamilton, Ontario
+                zoom: 12  // Zoom level
+            });
+        });
+    </script>
+</body>
+</html>
